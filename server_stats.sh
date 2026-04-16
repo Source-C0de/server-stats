@@ -1,7 +1,17 @@
 # !/bin/bash
 # server_stats.sh - Basic Linux performance monitor
+# Usage: ./server_stats.sh
 
-echo "=== Server Performance report ==="
+# ANSI Colors
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}========================================"
+echo "       🖥️  SERVER PERFORMANCE REPORT       "
+echo "========================================${NC}"
 
 # Cpu used 
 CPU_IDLE=$(top -bn1 | grep "Cpu(s)" | sed 's/.*, *\([0-9.]*\)%* id.*/\1/')
@@ -28,3 +38,21 @@ ps aux --sort=-%cpu | head -6 | column -t
 echo ""
 echo "🔸 Top 5 Processes by Memory:"
 ps aux --sort=-%mem | head -6 | column -t
+
+
+echo "📦 OS: $(cat /etc/os-release | grep PRETTY_NAME | cut -d'"' -f2)"
+echo "⏱️  Uptime: $(uptime -p)"
+echo "📈 Load Average: $(uptime | awk -F'load average:' '{print $2}')"
+echo "👥 Logged In: $(who | wc -l) user(s)"
+echo "🚫 Recent Failed Logins:"
+if command -v lastb &> /dev/null && [ -r /var/log/btmp ]; then
+  lastb -f /var/log/btmp | head -3 | awk 'NR>1 {print "  "$1, "from", $3, "at", $4, $5, $6}'
+else
+  echo "  (Requires root or btmp log access)"
+fi
+
+
+
+echo -e "${BLUE}========================================${NC}"
+echo "  📅 Generated: $(date '+%Y-%m-%d %H:%M:%S')"
+echo -e "${BLUE}=========
