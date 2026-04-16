@@ -14,3 +14,9 @@ MEM_USED_PCT=$(free -m | awk '/^Mem:/ {printf "%.1f", ($3/$2)*100}')
 MEM_FREE_PCT=$(free -m | awk '/^Mem:/ {printf "%.1f", ($4/$2)*100}')
 echo " Memory: Used ${MEM_USED_PCT}% | Free ${MEM_FREE_PCT}%"
 
+
+# Disk Used
+DISK_USED=$(df -h / | awk "NR==2 {print $3}")
+DISK_FREE=$(df -h / | awk "NR==2 {print $4}")
+DISK_PCT=$(df -h / | awk "NR==2 {print $5}")
+echo " Disk (/): Used $DISK_USED | Free $DISK_FREE | ($DISK_PCT)"
