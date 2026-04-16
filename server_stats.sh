@@ -20,3 +20,11 @@ DISK_USED=$(df -h / | awk "NR==2 {print $3}")
 DISK_FREE=$(df -h / | awk "NR==2 {print $4}")
 DISK_PCT=$(df -h / | awk "NR==2 {print $5}")
 echo " Disk (/): Used $DISK_USED | Free $DISK_FREE | ($DISK_PCT)"
+
+
+# % process
+echo "🔸 Top 5 Processes by CPU:"
+ps aux --sort=-%cpu | head -6 | column -t
+echo ""
+echo "🔸 Top 5 Processes by Memory:"
+ps aux --sort=-%mem | head -6 | column -t
